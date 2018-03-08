@@ -11,10 +11,10 @@ figure; hold on;
 %               2D plot, using the option 'k+' for the positive
 %               examples and 'ko' for the negative examples.
 %
-
-
-
-
+Adm = find(y==1);
+NotAdm = find(y==0);
+plot(X(Adm, 1), X(Adm, 2), 'k+', 'LineWidth', 2, 'MarkerSize', 7);
+plot(X(NotAdm, 1), X(NotAdm, 2), 'ko', 'MarkerFaceColor', 'y', 'MarkerSize', 7);
 
 
 
