@@ -62,30 +62,41 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
-%X = [ones(m, 1) X];
-%a2 = [ones(m, 1) sigmoid(X * Theta1')];
-%a3 = sigmoid(a2 * Theta2');
+X = [ones(m, 1) X];
+a_2 = [ones(m, 1) sigmoid(X * Theta1')];
+a_3 = sigmoid(a_2 * Theta2');
 
-%k = 10;
-%Y = zeros(k, m);
-%for i = 1:m
-%  Y(y(i), i) = 1;
-%end
+Y = zeros(num_labels, m);
+for i = 1:m
+  Y(y(i), i) = 1;
+end
 
+Theta1NoBias = Theta1(:, 2:end);
+Theta2NoBias = Theta2(:, 2:end);
 
-
-
-
-
-
+J = sum(1/m * sum((log(a_3)' .* -Y) - (log(1 - a_3)' .* (1 - Y)))) ...
+      + (lambda/(2*m)) * (sum(sum(Theta1NoBias .^ 2)) ...
+      + sum(sum(Theta2NoBias .^ 2)));
 
 
 % -------------------------------------------------------------
 
 % =========================================================================
 
+delta_3 = a_3' - Y;
+
+delta_2 = (Theta2' * delta_3)' .* sigmoidGradient(a_2);
+delta_2 = delta_2(:,2:end);
+
+DELTA_2 = delta_3 * a_2;
+
+DELTA_1 = delta_2' * X;
+
+D_1 = DELTA_1 / m;
+
+D_2 = DELTA_2 / m;
+
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
 
 end
